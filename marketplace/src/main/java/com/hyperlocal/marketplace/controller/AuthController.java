@@ -28,7 +28,7 @@ public class AuthController {
             response.setEmail(newUser.getEmail());
             response.setFirstName(newUser.getFirstName());
             response.setLastName(newUser.getLastName());
-            response.setPhoneNumber(newUser.getPhoneNumber()); // Added phone number mapping
+            response.setPhoneNumber(newUser.getPhoneNumber());
             response.setRole(newUser.getRole());
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (IllegalStateException e) {

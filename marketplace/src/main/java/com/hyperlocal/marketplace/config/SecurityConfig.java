@@ -1,6 +1,7 @@
 package com.hyperlocal.marketplace.config;
 
 import com.hyperlocal.marketplace.config.filter.JwtAuthFilter;
+import com.hyperlocal.marketplace.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,7 +58,9 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/error").permitAll() // Allow error endpoint
+                        .requestMatchers("/error").permitAll()
+                        // --- THIS IS THE NEW RULE ---
+                        .requestMatchers("/api/admin/**").hasAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
