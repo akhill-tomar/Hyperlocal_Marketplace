@@ -16,7 +16,7 @@ public class ProviderService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id", nullable = false)
     @JsonIgnore // Prevents infinite loops when serializing to JSON
     @ToString.Exclude // Prevents infinite loops in toString()

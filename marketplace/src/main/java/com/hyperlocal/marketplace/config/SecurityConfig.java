@@ -53,13 +53,13 @@ public class SecurityConfig {
     ) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                // --- THIS IS THE CRITICAL LINE ---
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/error").permitAll()
+                        .requestMatchers("/api/auth/**", "/error", "/api/services/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority(Role.ADMIN.name())
-                        // --- ADD THIS NEW RULE ---
                         .requestMatchers("/api/providers/**").hasAuthority(Role.PROVIDER.name())
                         .anyRequest().authenticated()
                 )
