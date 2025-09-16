@@ -42,6 +42,7 @@ public class ServiceBrowserController {
 
         List<ProviderSummaryDTO> providerDTOs = providerServices.stream().map(ps -> {
             ProviderSummaryDTO dto = new ProviderSummaryDTO();
+            dto.setProviderServiceId(ps.getId());
             dto.setProfileId(ps.getProfile().getId());
             dto.setBusinessName(ps.getProfile().getBusinessName());
             dto.setBio(ps.getProfile().getBio());

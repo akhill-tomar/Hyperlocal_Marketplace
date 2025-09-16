@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class ProviderSummaryDTO {
+    private Long providerServiceId;
     private Long profileId;
     private String businessName;
     private String bio;

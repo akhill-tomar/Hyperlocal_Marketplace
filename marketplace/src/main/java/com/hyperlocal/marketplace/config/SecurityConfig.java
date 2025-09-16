@@ -53,7 +53,6 @@ public class SecurityConfig {
     ) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
-                // --- THIS IS THE CRITICAL LINE ---
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -61,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**", "/error", "/api/services/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/providers/**").hasAuthority(Role.PROVIDER.name())
+                        .requestMatchers("/api/bookings/**").hasAuthority(Role.CUSTOMER.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
