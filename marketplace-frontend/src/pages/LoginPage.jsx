@@ -1,43 +1,94 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext'; // Import useAuth
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+// Import MUI components
+import { Button, Card, CardContent, TextField, Typography, Container, Box } from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
+
 function LoginPage() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [message, setMessage] = useState('');
-   const { login } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage('');
     try {
-       await login(formData); // Use the context login function
-      setMessage('Login successful! Redirecting...');
-      navigate('/'); // Redirect to home page on success
+      await login(formData);
+      navigate('/');
     } catch (error) {
-      console.error('Login failed:', error.response?.data);
-      setMessage('Login failed. Check your credentials.');
+      const errorMsg = error.response?.data?.message || 'Login failed. Please check your credentials.';
+      setMessage(errorMsg);
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-        <input type="password" name="password" placeholder="Password" onChange={handleChange} required />
-        <button type="submit">Login</button>
-      </form>
-      {message && <p>{message}</p>}
-    </div>
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Card sx={{ minWidth: 400, padding: 2 }}>
+          <CardContent>
+            <Box sx={{ textAlign: 'center', marginBottom: 2 }}>
+              <LoginIcon color="primary" sx={{ fontSize: 40 }}/>
+              <Typography component="h1" variant="h5">
+                Welcome Back
+              </Typography>
+            </Box>
+            
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={handleChange}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={handleChange}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Log In
+              </Button>
+              {message && (
+                <Typography color="error" align="center" variant="body2">
+                  {message}
+                </Typography>
+              )}
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    </Container>
   );
 }
 

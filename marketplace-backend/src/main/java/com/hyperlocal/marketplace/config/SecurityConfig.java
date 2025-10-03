@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/error", "/api/services/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/error", "/api/services/**", "/api/provider-services/**").permitAll()
                         .requestMatchers("/api/admin/**").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/providers/**").hasAuthority(Role.PROVIDER.name())
                         .requestMatchers("/api/bookings/**").hasAuthority(Role.CUSTOMER.name())

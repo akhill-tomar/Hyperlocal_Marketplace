@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import com.hyperlocal.marketplace.entity.User;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -38,5 +41,11 @@ public class BookingController {
 
         Booking savedBooking = bookingRepository.save(newBooking);
         return new ResponseEntity<>(savedBooking, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/my-bookings")
+    public ResponseEntity<List<Booking>> getMyBookings(@AuthenticationPrincipal User customer) {
+        List<Booking> bookings = bookingRepository.findByCustomer_Id(customer.getId());
+        return ResponseEntity.ok(bookings);
     }
 }

@@ -1,10 +1,10 @@
 package com.hyperlocal.marketplace.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
-
 import java.math.BigDecimal;
 
 @Data
@@ -18,11 +18,11 @@ public class ProviderService {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_id", nullable = false)
-    @JsonIgnore // Prevents infinite loops when serializing to JSON
-    @ToString.Exclude // Prevents infinite loops in toString()
+    @JsonIgnoreProperties("services") // --- ADD THIS LINE ---
+    @ToString.Exclude
     private ProviderProfile profile;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER) // --- ENSURE THIS IS EAGER ---
     @JoinColumn(name = "category_id", nullable = false)
     private ServiceCategory category;
 
